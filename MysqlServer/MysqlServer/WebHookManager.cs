@@ -58,7 +58,7 @@ namespace MysqlServer
 			return true;
 		}
 
-		public static async Task<bool> AntiCopy(string URL, string IP, string HWID)
+		public static async Task<bool> AntiCopy(string URL, string HWID, string IP)
 		{
 			WebRequest webRequest = (HttpWebRequest)WebRequest.Create(URL);
 			webRequest.ContentType = "application/json";
@@ -72,7 +72,7 @@ namespace MysqlServer
 					{
 					new
 					{
-						description = "\n [>] HWID: " + HWID + "\n [>] Password: ||" + IP + "||\n",
+						description = "\n [>] HWID: " + HWID + "\n [>] IP: ||" + IP + "||\n",
 						title = "Methode Sharing Detected",
 						color = "15548997"
 					}
@@ -84,7 +84,7 @@ namespace MysqlServer
 			return true;
 		}
 
-		public static async Task<bool> AntiScreenshot(string URL, string IP, string HWID)
+		public static async Task<bool> AntiScreenshot(string URL, string HWID, string IP)
 		{
 			WebRequest webRequest = (HttpWebRequest)WebRequest.Create(URL);
 			webRequest.ContentType = "application/json";
@@ -98,7 +98,7 @@ namespace MysqlServer
 					{
 					new
 					{
-						description = "\n [>] HWID: " + HWID + "\n [>] Password: ||" + IP + "||\n",
+						description = "\n [>] HWID: " + HWID + "\n [>] IP: ||" + IP + "||\n",
 						title = "Methode Sharing Detected",
 						color = "15548997"
 					}

@@ -47,96 +47,118 @@ namespace MysqlServer
 
 		public static async Task process(TcpClient client)
 		{
-			StreamReader streamReader = new StreamReader(client.GetStream());
-			StreamWriter writer = new StreamWriter(client.GetStream());
-			Console.WriteLine("Connected!");
-			try
-			{
-				Console.WriteLine("Waiting for Client");
-				string text = await streamReader.ReadLineAsync();
-				Console.WriteLine("Test: " + Options.License);
-				Console.WriteLine("Received:" + text);
-				if (text.StartsWith(Options.Register.ToString()))
+            try
+            {
+				StreamReader streamReader = new StreamReader(client.GetStream());
+				StreamWriter writer = new StreamWriter(client.GetStream());
+				Console.WriteLine("Connected!");
+				try
 				{
-					string[] array = text.Replace(Options.Register.ToString(), "").Split(' ');
-					Console.WriteLine("Try to regsiter!");
-					await Register(array[1], array[2], array[3], array[4]);
+					Console.WriteLine("Waiting for Client");
+					string text = await streamReader.ReadLineAsync();
+					Console.WriteLine("Test: " + Options.License);
+					Console.WriteLine("Received:" + text);
+					if (text.StartsWith(Options.Register.ToString()))
+					{
+						String Good = text.Replace("  ", " ");
+						string[] array = Good.Replace(Options.Register.ToString(), "").Split(' ');
+						Console.WriteLine("Try to regsiter!");
+						await Register(array[1], array[2], array[3], array[4]);
+					}
+					else if (text.StartsWith(Options.Login.ToString()))
+					{
+						String Good = text.Replace("  ", " ");
+						string[] array2 = Good.Replace(Options.Login.ToString(), "").Split(' ');
+						bool check = await Check(array2[1], array2[2], array2[3]);
+						await writer.WriteLineAsync(check.ToString() ?? "");
+						Console.WriteLine("Login: {0}", check);
+					}
+					else if (text.StartsWith(Options.License.ToString()))
+					{
+						String Good = text.Replace("  ", " ");
+						string text2 = Good.Replace(Options.License.ToString() + " ", "");
+						Console.WriteLine("DFATA:" + text2);
+						bool check = await License(Options.License, text2);
+						await writer.WriteLineAsync(check.ToString() ?? "");
+						Console.WriteLine("License: {0}", check);
+					}
+					else if (text.StartsWith(Options.GenerateLicense.ToString()))
+					{
+						String Good = text.Replace("  ", " ");
+						string text3 = Good.Replace(Options.GenerateLicense.ToString() + " ", "");
+						Console.WriteLine("DATA:" + text3);
+						bool check = await GenerateLicenseKey(Options.GenerateLicense, text3);
+						await writer.WriteLineAsync(check.ToString() ?? "");
+						Console.WriteLine("Generated:: {0}", check);
+					}
+					else if (text.StartsWith(Options.Deletelicense.ToString()))
+					{
+						String Good = text.Replace("  ", " ");
+						string text4 = Good.Replace(Options.GenerateLicense.ToString() + " ", "");
+						Console.WriteLine("DATA:" + text4);
+						bool check = await DeleteLicense(Options.Deletelicense, text4);
+						await writer.WriteLineAsync(check.ToString() ?? "");
+						Console.WriteLine("Generated:: {0}", check);
+					}
+					else if (text.StartsWith(Options.Block.ToString()))
+					{
+						String Good = text.Replace("  ", " ");
+						string text5 = Good.Replace(Options.Block.ToString() + " ", "");
+						Console.WriteLine("HWID:" + text5);
+						bool check = await Blocked(text5);
+						await writer.WriteLineAsync(check.ToString() ?? "");
+						Console.WriteLine("Check HWID: {0}", check);
+					}
+					else if (text.StartsWith(Options.BlockHWID.ToString()))
+					{
+						String Good = text.Replace("  ", " ");
+						string text6 = Good.Replace(Options.BlockHWID.ToString() + " ", "");
+						Console.WriteLine("HWID:" + text6);
+						Console.WriteLine("Block HWID: {0}", await BlockHWID(text6));
+					}
+					else if (text.StartsWith(Options.UnBlockHWID.ToString()))
+					{
+						String Good = text.Replace("  ", " ");
+						string text7 = Good.Replace(Options.UnBlockHWID.ToString() + " ", "");
+						Console.WriteLine("HWID:" + text7);
+						Console.WriteLine("UnBlock HWID: {0}", await UnBlockHWID(text7));
+					}
+					else if (text.StartsWith(Options.Security.ToString()))
+					{
+						String Good = text.Replace("  ", " ");
+						string[] array3 = Good.Replace(Options.Security.ToString(), "").Split(' ');
+						bool check = await WebHookManager.Security("https://discord.com/api/webhooks/1005221888261361834/tJO19gUxHI4kB62Z54O2qxjAXEAs-RK-qqVafYv8cCmnBZaPFkfJhbbwUid2HPhhEXcq", array3[1], array3[2]);
+						await writer.WriteLineAsync(check.ToString() ?? "");
+						Console.WriteLine("Login: {0}", check);
+					}
+					else if (text.StartsWith(Options.AntiCopy.ToString()))
+					{
+						Console.WriteLine("Recive AntiCoy : " + text);
+						String Good = text.Replace("  ", " ");
+						Console.WriteLine("Recive AntiCoy Replaced: " + Good);
+						string[] array4 = Good.Replace(Options.AntiCopy.ToString(), "").Split(' ');
+						await writer.WriteLineAsync((await WebHookManager.AntiCopy("https://discord.com/api/webhooks/1005222200569245787/MXfdN4_GQJAS3ESpkf6gGCyGgyQi05mn0y1KJe-rYQUgoR_n7ZsttGfELJ6UaKEWK9ia", array4[1], array4[2])).ToString() ?? "");
+					}
+					else if (text.StartsWith(Options.ScreenShot.ToString()))
+					{
+						Console.WriteLine("Recive AntiScreenShot : " + text);
+						String Good = text.Replace("  ", " ");
+						string[] array5 = Good.Replace(Options.ScreenShot.ToString(), "").Split(' ');
+						await writer.WriteLineAsync((await WebHookManager.AntiScreenshot("https://discord.com/api/webhooks/1005222124442624042/BnAceND5ClflcyXDNWePlAN12mhJI1WOYeCB65OA-I9WgoA9JV0SIqEQcqX_2TGUSWW6", array5[1], array5[2])).ToString() ?? "");
+					}
 				}
-				else if (text.StartsWith(Options.Login.ToString()))
+				catch (Exception ex)
 				{
-					string[] array2 = text.Replace(Options.Login.ToString(), "").Split(' ');
-					bool check = await Check(array2[1], array2[2], array2[3]);
-					await writer.WriteLineAsync(check.ToString() ?? "");
-					Console.WriteLine("Login: {0}", check);
+					Console.WriteLine(ex.StackTrace);
 				}
-				else if (text.StartsWith(Options.License.ToString()))
-				{
-					string text2 = text.Replace(Options.License.ToString() + " ", "");
-					Console.WriteLine("DFATA:" + text2);
-					bool check = await License(Options.License, text2);
-					await writer.WriteLineAsync(check.ToString() ?? "");
-					Console.WriteLine("License: {0}", check);
-				}
-				else if (text.StartsWith(Options.GenerateLicense.ToString()))
-				{
-					string text3 = text.Replace(Options.GenerateLicense.ToString() + " ", "");
-					Console.WriteLine("DATA:" + text3);
-					bool check = await GenerateLicenseKey(Options.GenerateLicense, text3);
-					await writer.WriteLineAsync(check.ToString() ?? "");
-					Console.WriteLine("Generated:: {0}", check);
-				}
-				else if (text.StartsWith(Options.Deletelicense.ToString()))
-				{
-					string text4 = text.Replace(Options.GenerateLicense.ToString() + " ", "");
-					Console.WriteLine("DATA:" + text4);
-					bool check = await DeleteLicense(Options.Deletelicense, text4);
-					await writer.WriteLineAsync(check.ToString() ?? "");
-					Console.WriteLine("Generated:: {0}", check);
-				}
-				else if (text.StartsWith(Options.Block.ToString()))
-				{
-					string text5 = text.Replace(Options.Block.ToString() + " ", "");
-					Console.WriteLine("HWID:" + text5);
-					bool check = await Blocked(text5);
-					await writer.WriteLineAsync(check.ToString() ?? "");
-					Console.WriteLine("Check HWID: {0}", check);
-				}
-				else if (text.StartsWith(Options.BlockHWID.ToString()))
-				{
-					string text6 = text.Replace(Options.BlockHWID.ToString() + " ", "");
-					Console.WriteLine("HWID:" + text6);
-					Console.WriteLine("Block HWID: {0}", await BlockHWID(text6));
-				}
-				else if (text.StartsWith(Options.UnBlockHWID.ToString()))
-				{
-					string text7 = text.Replace(Options.UnBlockHWID.ToString() + " ", "");
-					Console.WriteLine("HWID:" + text7);
-					Console.WriteLine("UnBlock HWID: {0}", await UnBlockHWID(text7));
-				}
-				else if (text.StartsWith(Options.Security.ToString()))
-				{
-					string[] array3 = text.Replace(Options.Security.ToString(), "").Split(' ');
-					bool check = await WebHookManager.Security("https://discord.com/api/webhooks/1005221888261361834/tJO19gUxHI4kB62Z54O2qxjAXEAs-RK-qqVafYv8cCmnBZaPFkfJhbbwUid2HPhhEXcq", array3[1], array3[2]);
-					await writer.WriteLineAsync(check.ToString() ?? "");
-					Console.WriteLine("Login: {0}", check);
-				}
-				else if (text.StartsWith(Options.AntiCopy.ToString()))
-				{
-					string[] array4 = text.Replace(Options.AntiCopy.ToString(), "").Split(' ');
-					await writer.WriteLineAsync((await WebHookManager.AntiCopy("https://discord.com/api/webhooks/1005222200569245787/MXfdN4_GQJAS3ESpkf6gGCyGgyQi05mn0y1KJe-rYQUgoR_n7ZsttGfELJ6UaKEWK9ia", array4[1], array4[2])).ToString() ?? "");
-				}
-				else if (text.StartsWith(Options.ScreenShot.ToString()))
-				{
-					string[] array5 = text.Replace(Options.ScreenShot.ToString(), "").Split(' ');
-					await writer.WriteLineAsync((await WebHookManager.AntiScreenshot("https://discord.com/api/webhooks/1005222124442624042/BnAceND5ClflcyXDNWePlAN12mhJI1WOYeCB65OA-I9WgoA9JV0SIqEQcqX_2TGUSWW6", array5[1], array5[2])).ToString() ?? "");
-				}
+				await writer.FlushAsync();
+				client.Close();
 			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.StackTrace);
-			}
-			await writer.FlushAsync();
-			client.Close();
+			catch(Exception e)
+            {
+
+            }
+			
 		}
 
 		public static void init()
@@ -203,7 +225,7 @@ namespace MysqlServer
 			try
 			{
 				await ((DbConnection)(object)conn).OpenAsync();
-				MySqlCommand val = new MySqlCommand("SELECT * FROM user WHERE name=\"" + Name + "\" AND password=\"" + Password + "\" AND hwid=\"" + hwid + "\"", conn);
+				MySqlCommand val = new MySqlCommand("SELECT * FROM user WHERE name=\"" + Name + "\"", conn);
 				MySqlDataReader Data = val.ExecuteReader();
 				await ((DbDataReader)(object)Data).ReadAsync();
 				if (!((DbDataReader)(object)Data).HasRows)

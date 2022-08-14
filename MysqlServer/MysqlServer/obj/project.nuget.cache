@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Tw6YCvg/X/i3mBL5IeY886RLRV7Ze4NGpxkjwBVTKg+q80je2dk09fYQeL9wmmgVsPyjpkLj5YGPvL1/GV9IwA==",
+  "dgSpecHash": "l1Gf4gK4VS1ArL9pZ93ZIktggANHHFuN5EXxpdBI/NS097daZnuVL366+Ue0a2LUeF39FEFAb8upJJVqFx0upQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Micro\\source\\repos\\MysqlServer\\MysqlServer\\MysqlServer.csproj",
   "expectedPackageFiles": [
@@ -23,10 +23,7 @@
     "C:\\Users\\Micro\\.nuget\\packages\\system.security.permissions\\4.7.0\\system.security.permissions.4.7.0.nupkg.sha512",
     "C:\\Users\\Micro\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\Micro\\.nuget\\packages\\system.text.encoding.codepages\\4.4.0\\system.text.encoding.codepages.4.4.0.nupkg.sha512",
-    "C:\\Users\\Micro\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
-    "C:\\Users\\Micro\\.nuget\\packages\\microsoft.netcore.app.runtime.linux-x64\\3.1.27\\microsoft.netcore.app.runtime.linux-x64.3.1.27.nupkg.sha512",
-    "C:\\Users\\Micro\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.linux-x64\\3.1.27\\microsoft.aspnetcore.app.runtime.linux-x64.3.1.27.nupkg.sha512",
-    "C:\\Users\\Micro\\.nuget\\packages\\microsoft.netcore.app.host.linux-x64\\3.1.27\\microsoft.netcore.app.host.linux-x64.3.1.27.nupkg.sha512"
+    "C:\\Users\\Micro\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
   ],
   "logs": []
 }
